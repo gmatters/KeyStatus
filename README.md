@@ -8,12 +8,15 @@ An After Effects plugin which renders the alpha channel to opaque RGB in an exag
 
 ![Footage](keystatus_footage.png)
 
+Looks like a pretty good key...
+
 ![Status](keystatus_status.png)
 
-Untested on Windows.
+But there are soft areas which might leak background when composisted, and slightly visible bits in the background
 
 # Build and install
 
+## Mac
 Download AfterEffectsSDK
 
 Put this project's code into AfterEffectsSDK/Examples/Effect/Keystatus
@@ -25,4 +28,11 @@ chown the above dir to yourself, or use chgrp chmod or something else to make it
 open XCode project
 
 command-B
+
+## Windows
+
+Untested on Windows, but the VSCode project is up to date and in theory it should work fine if built and installed.
+
+On Windows, the common plug-ins folder can be found (as an explicit path) in the following registry entry: HKLM\SOFTWARE\Adobe\After Effects\[version]\CommonPluginInstallPath
+
 
