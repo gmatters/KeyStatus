@@ -106,8 +106,8 @@ ParamsSetup (
 
 	PF_ADD_COLOR(	STR(StrID_Color_Param_Name), 
 					PF_HALF_CHAN8,
-					PF_MAX_CHAN8,
-					PF_MAX_CHAN8,
+                    PF_HALF_CHAN8,
+                    PF_HALF_CHAN8,
 					COLOR_DISK_ID);
 	
 	out_data->num_params = KEYSTATUS_NUM_PARAMS;
@@ -125,19 +125,15 @@ MySimpleGainFunc16 (
 {
 	PF_Err		err = PF_Err_NONE;
 
-	GainInfo	*giP	= reinterpret_cast<GainInfo*>(refcon);
-	PF_FpLong	tempF	= 0;
+	ColorInfo	*giP	= reinterpret_cast<ColorInfo*>(refcon);
+	PF_FpLong	red	= PF_HALF_CHAN16;
+    PF_FpLong   green = PF_HALF_CHAN16;
+    PF_FpLong   blue = PF_HALF_CHAN16;
 					
 	if (giP){
-		tempF = giP->gainF * PF_MAX_CHAN16 / 100.0;
-		if (tempF > PF_MAX_CHAN16){
-			tempF = PF_MAX_CHAN16;
-		};
-
-		outP->alpha		=	inP->alpha;
-		outP->red		=	MIN((inP->red	+ (A_u_char) tempF), PF_MAX_CHAN16);
-		outP->green		=	MIN((inP->green	+ (A_u_char) tempF), PF_MAX_CHAN16);
-		outP->blue		=	MIN((inP->blue	+ (A_u_char) tempF), PF_MAX_CHAN16);
+		red = giP->red * PF_MAX_CHAN16 / PF_MAX_CHAN8;
+        green = giP->green * PF_MAX_CHAN16 / PF_MAX_CHAN8;
+        blue = giP->blue * PF_MAX_CHAN16 / PF_MAX_CHAN8;
 	}
 
     outP->alpha        =    PF_MAX_CHAN16;
@@ -146,7 +142,9 @@ MySimpleGainFunc16 (
     } else if (inP->alpha == PF_MAX_CHAN16) {
         outP->red = outP->green = outP->blue = PF_MAX_CHAN16;
     } else {
-        outP->red = outP->green = outP->blue = PF_HALF_CHAN16;
+        outP->red = red;
+        outP->green = green;
+        outP->blue = blue;
     }
 
 	return err;
@@ -162,19 +160,15 @@ MySimpleGainFunc8 (
 {
 	PF_Err		err = PF_Err_NONE;
 
-	GainInfo	*giP	= reinterpret_cast<GainInfo*>(refcon);
-	PF_FpLong	tempF	= 0;
+    ColorInfo    *giP    = reinterpret_cast<ColorInfo*>(refcon);
+    PF_FpLong    red    = PF_HALF_CHAN8;
+    PF_FpLong   green = PF_HALF_CHAN8;
+    PF_FpLong   blue = PF_HALF_CHAN8;
 					
 	if (giP){
-		tempF = giP->gainF * PF_MAX_CHAN8 / 100.0;
-		if (tempF > PF_MAX_CHAN8){
-			tempF = PF_MAX_CHAN8;
-		};
-
-		outP->alpha		=	inP->alpha;
-		outP->red		=	MIN((inP->red	+ (A_u_char) tempF), PF_MAX_CHAN8);
-		outP->green		=	MIN((inP->green	+ (A_u_char) tempF), PF_MAX_CHAN8);
-		outP->blue		=	MIN((inP->blue	+ (A_u_char) tempF), PF_MAX_CHAN8);
+        red = giP->red;
+        green = giP->green;
+        blue = giP->blue;
 	}
     
     outP->alpha        =    PF_MAX_CHAN8;
@@ -183,7 +177,9 @@ MySimpleGainFunc8 (
     } else if (inP->alpha == PF_MAX_CHAN8) {
         outP->red = outP->green = outP->blue = PF_MAX_CHAN8;
     } else {
-        outP->red = outP->green = outP->blue = PF_HALF_CHAN8;
+        outP->red = red;
+        outP->green = green;
+        outP->blue = blue;
     }
 
 	return err;
@@ -200,12 +196,14 @@ Render (
 	AEGP_SuiteHandler	suites(in_data->pica_basicP);
 
 	/*	Put interesting code here. */
-	GainInfo			giP;
+	ColorInfo			giP;
 	AEFX_CLR_STRUCT(giP);
 	A_long				linesL	= 0;
 
 	linesL 		= output->extent_hint.bottom - output->extent_hint.top;
-	giP.gainF 	= params[KEYSTATUS_GAIN]->u.fs_d.value;
+    giP.red 	= params[KEYSTATUS_COLOR]->u.cd.value.red;
+    giP.green     = params[KEYSTATUS_COLOR]->u.cd.value.green;
+    giP.blue     = params[KEYSTATUS_COLOR]->u.cd.value.blue;
 	
 	if (PF_WORLD_IS_DEEP(output)){
 		ERR(suites.Iterate16Suite1()->iterate(	in_data,

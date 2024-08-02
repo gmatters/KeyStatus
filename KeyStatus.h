@@ -90,6 +90,12 @@ typedef struct GainInfo{
 	PF_FpLong	gainF;
 } GainInfo, *GainInfoP, **GainInfoH;
 
+typedef struct ColorInfo{
+    PF_FpLong    red;
+    PF_FpLong    green;
+    PF_FpLong    blue;
+} ColorInfo, *ColorInfoP, **ColorInfoH;
+
 
 extern "C" {
 
