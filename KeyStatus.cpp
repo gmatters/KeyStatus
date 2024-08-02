@@ -140,6 +140,15 @@ MySimpleGainFunc16 (
 		outP->blue		=	MIN((inP->blue	+ (A_u_char) tempF), PF_MAX_CHAN16);
 	}
 
+    outP->alpha        =    PF_MAX_CHAN16;
+    if (inP->alpha == 0) {
+        outP->red = outP->green = outP->blue = 0;
+    } else if (inP->alpha == PF_MAX_CHAN16) {
+        outP->red = outP->green = outP->blue = PF_MAX_CHAN16;
+    } else {
+        outP->red = outP->green = outP->blue = PF_HALF_CHAN16;
+    }
+
 	return err;
 }
 
@@ -167,6 +176,15 @@ MySimpleGainFunc8 (
 		outP->green		=	MIN((inP->green	+ (A_u_char) tempF), PF_MAX_CHAN8);
 		outP->blue		=	MIN((inP->blue	+ (A_u_char) tempF), PF_MAX_CHAN8);
 	}
+    
+    outP->alpha        =    PF_MAX_CHAN8;
+    if (inP->alpha == 0) {
+        outP->red = outP->green = outP->blue = 0;
+    } else if (inP->alpha == PF_MAX_CHAN8) {
+        outP->red = outP->green = outP->blue = PF_MAX_CHAN8;
+    } else {
+        outP->red = outP->green = outP->blue = PF_HALF_CHAN8;
+    }
 
 	return err;
 }
@@ -228,7 +246,7 @@ PF_Err PluginDataEntryFunction(
 		inPluginDataCallBackPtr,
 		"KeyStatus", // Name
 		"ADBE KeyStatus", // Match Name
-		"Sample Plug-ins", // Category
+		"Keying", // Category
 		AE_RESERVED_INFO); // Reserved Info
 
 	return result;
