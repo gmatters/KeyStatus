@@ -12,13 +12,12 @@ An After Effects plugin which renders the alpha channel to opaque RGB in an exag
 
 Untested on Windows.
 
-To build:
+# Build and install
 
 Download AfterEffectsSDK
 Put this project's code into AfterEffectsSDK/Examples/Effect/Keystatus
-
 sudo mkdir /Library/Application\ Support/Adobe/Common/Plug-ins/7.0/MediaCore/KeyStatus
 chown the above dir to yourself, or use chgrp chmod or something else to make it writeable by your user account, so that XCode can copy the compiled effect there without permission problems
-open XCode project in XCode
+open XCode project
 command-B
 
