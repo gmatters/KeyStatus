@@ -87,20 +87,7 @@ ParamsSetup (
 	PF_LayerDef		*output )
 {
 	PF_Err		err		= PF_Err_NONE;
-	PF_ParamDef	def;	
-
-	AEFX_CLR_STRUCT(def);
-
-	PF_ADD_FLOAT_SLIDERX(	STR(StrID_Gain_Param_Name), 
-							KEYSTATUS_GAIN_MIN, 
-							KEYSTATUS_GAIN_MAX, 
-							KEYSTATUS_GAIN_MIN, 
-							KEYSTATUS_GAIN_MAX, 
-							KEYSTATUS_GAIN_DFLT,
-							PF_Precision_HUNDREDTHS,
-							0,
-							0,
-							GAIN_DISK_ID);
+	PF_ParamDef	def;
 
 	AEFX_CLR_STRUCT(def);
 
@@ -116,7 +103,7 @@ ParamsSetup (
 }
 
 static PF_Err
-MySimpleGainFunc16 (
+KeyStatusFunc16 (
 	void		*refcon, 
 	A_long		xL, 
 	A_long		yL, 
@@ -125,15 +112,15 @@ MySimpleGainFunc16 (
 {
 	PF_Err		err = PF_Err_NONE;
 
-	ColorInfo	*giP	= reinterpret_cast<ColorInfo*>(refcon);
+	ColorInfo	*ciP	= reinterpret_cast<ColorInfo*>(refcon);
 	PF_FpLong	red	= PF_HALF_CHAN16;
     PF_FpLong   green = PF_HALF_CHAN16;
     PF_FpLong   blue = PF_HALF_CHAN16;
 					
-	if (giP){
-		red = giP->red * PF_MAX_CHAN16 / PF_MAX_CHAN8;
-        green = giP->green * PF_MAX_CHAN16 / PF_MAX_CHAN8;
-        blue = giP->blue * PF_MAX_CHAN16 / PF_MAX_CHAN8;
+	if (ciP){
+		red = ciP->red * PF_MAX_CHAN16 / PF_MAX_CHAN8;
+        green = ciP->green * PF_MAX_CHAN16 / PF_MAX_CHAN8;
+        blue = ciP->blue * PF_MAX_CHAN16 / PF_MAX_CHAN8;
 	}
 
     outP->alpha        =    PF_MAX_CHAN16;
@@ -151,7 +138,7 @@ MySimpleGainFunc16 (
 }
 
 static PF_Err
-MySimpleGainFunc8 (
+KeyStatusFunc8 (
 	void		*refcon, 
 	A_long		xL, 
 	A_long		yL, 
@@ -160,15 +147,15 @@ MySimpleGainFunc8 (
 {
 	PF_Err		err = PF_Err_NONE;
 
-    ColorInfo    *giP    = reinterpret_cast<ColorInfo*>(refcon);
+    ColorInfo    *ciP    = reinterpret_cast<ColorInfo*>(refcon);
     PF_FpLong    red    = PF_HALF_CHAN8;
     PF_FpLong   green = PF_HALF_CHAN8;
     PF_FpLong   blue = PF_HALF_CHAN8;
 					
-	if (giP){
-        red = giP->red;
-        green = giP->green;
-        blue = giP->blue;
+	if (ciP){
+        red = ciP->red;
+        green = ciP->green;
+        blue = ciP->blue;
 	}
     
     outP->alpha        =    PF_MAX_CHAN8;
@@ -196,14 +183,14 @@ Render (
 	AEGP_SuiteHandler	suites(in_data->pica_basicP);
 
 	/*	Put interesting code here. */
-	ColorInfo			giP;
-	AEFX_CLR_STRUCT(giP);
+	ColorInfo			ciP;
+	AEFX_CLR_STRUCT(ciP);
 	A_long				linesL	= 0;
 
 	linesL 		= output->extent_hint.bottom - output->extent_hint.top;
-    giP.red 	= params[KEYSTATUS_COLOR]->u.cd.value.red;
-    giP.green     = params[KEYSTATUS_COLOR]->u.cd.value.green;
-    giP.blue     = params[KEYSTATUS_COLOR]->u.cd.value.blue;
+    ciP.red 	= params[KEYSTATUS_COLOR]->u.cd.value.red;
+    ciP.green     = params[KEYSTATUS_COLOR]->u.cd.value.green;
+    ciP.blue     = params[KEYSTATUS_COLOR]->u.cd.value.blue;
 	
 	if (PF_WORLD_IS_DEEP(output)){
 		ERR(suites.Iterate16Suite1()->iterate(	in_data,
@@ -211,8 +198,8 @@ Render (
 												linesL,							// progress final
 												&params[KEYSTATUS_INPUT]->u.ld,	// src 
 												NULL,							// area - null for all pixels
-												(void*)&giP,					// refcon - your custom data pointer
-												MySimpleGainFunc16,				// pixel function pointer
+												(void*)&ciP,					// refcon - your custom data pointer
+												KeyStatusFunc16,				// pixel function pointer
 												output));
 	} else {
 		ERR(suites.Iterate8Suite1()->iterate(	in_data,
@@ -220,8 +207,8 @@ Render (
 												linesL,							// progress final
 												&params[KEYSTATUS_INPUT]->u.ld,	// src 
 												NULL,							// area - null for all pixels
-												(void*)&giP,					// refcon - your custom data pointer
-												MySimpleGainFunc8,				// pixel function pointer
+												(void*)&ciP,					// refcon - your custom data pointer
+												KeyStatusFunc8,				// pixel function pointer
 												output));	
 	}
 

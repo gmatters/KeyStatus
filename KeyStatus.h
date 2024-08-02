@@ -68,27 +68,16 @@ typedef short int			int16;
 #define	BUILD_VERSION	1
 
 
-/* Parameter defaults */
-
-#define	KEYSTATUS_GAIN_MIN		0
-#define	KEYSTATUS_GAIN_MAX		100
-#define	KEYSTATUS_GAIN_DFLT		10
 
 enum {
 	KEYSTATUS_INPUT = 0,
-	KEYSTATUS_GAIN,
 	KEYSTATUS_COLOR,
 	KEYSTATUS_NUM_PARAMS
 };
 
 enum {
-	GAIN_DISK_ID = 1,
-	COLOR_DISK_ID,
+	COLOR_DISK_ID = 1,
 };
-
-typedef struct GainInfo{
-	PF_FpLong	gainF;
-} GainInfo, *GainInfoP, **GainInfoH;
 
 typedef struct ColorInfo{
     PF_FpLong    red;
