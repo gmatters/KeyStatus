@@ -87,6 +87,7 @@
 				C4E618C9095A3CE80012CA3F /* Sources */,
 				C4E618CA095A3CE80012CA3F /* Frameworks */,
 				C4E618EA095A3E040012CA3F /* Rez */,
+				6C2861A62C5CF969008E0939 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -143,6 +144,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXRezBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6C2861A62C5CF969008E0939 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "$SRCROOT/install-plugin.sh\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C4E618C9095A3CE80012CA3F /* Sources */ = {
@@ -203,6 +224,7 @@
 				INFOPLIST_FILE = "KeyStatus.plugin-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				ONLY_ACTIVE_ARCH = NO;
+				PLUGIN_DIR = "/Library/Application Support/Adobe/Common/Plug-ins/7.0/MediaCore/KeyStatus";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adobe.AfterEffects.KeyStatus;
 				PRODUCT_NAME = KeyStatus;
 				SDKROOT = macosx;

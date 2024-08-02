@@ -4,8 +4,12 @@
 <dict>
 	<key>BuildLocationStyle</key>
 	<string>UseAppPreferences</string>
+	<key>CustomBuildIntermediatesPath</key>
+	<string>~/Desktop/Build/Intermediates.noindex</string>
 	<key>CustomBuildLocationType</key>
-	<string>RelativeToDerivedData</string>
+	<string>Absolute</string>
+	<key>CustomBuildProductsPath</key>
+	<string>/Library/Application Support/Adobe/Common/Plug-ins/7.0/MediaCore</string>
 	<key>DerivedDataLocationStyle</key>
 	<string>Default</string>
 	<key>IssueFilterStyle</key>
